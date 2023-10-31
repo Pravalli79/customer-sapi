@@ -1,0 +1,21 @@
+#%RAML 1.0 DataType
+
+properties:
+  ID: 
+    type: integer
+    minimum: 1
+    required: false
+  name: 
+    type: string
+  accountType: 
+    type: string
+    enum: [business, personal]
+    required: true
+  address: 
+    type: string
+  airMiles:
+    type: integer
+    minimum: 0
+  createdDate: 
+    type: datetime
+    required: false

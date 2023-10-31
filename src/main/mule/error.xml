@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<error-handler name="mainErrorHandler" doc:id="3020c906-8bcb-4ecc-a540-33d5ffed57f5" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c0800afe-122c-41c9-ab2c-32292649a460" type="APIKIT:BAD_REQUEST">
+			<ee:transform doc:name="Transform Message" doc:id="5d1f414a-f34d-44a3-8cb6-0cb94cabd029" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Bad request"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="e185282a-4af1-4f79-a235-662e906e7125" type="APIKIT:NOT_FOUND">
+			<ee:transform doc:name="Transform Message" doc:id="ae199f77-74f1-4e89-8ffc-cba48e3404ef" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	message: "Not Found"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d875a482-cd3a-4275-a55c-2f47df284cce" type="APIKIT:METHOD_NOT_ALLOWED">
+			<ee:transform doc:name="Transform Message" doc:id="883f940a-d99e-431b-b83d-4cdcc712db2b" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	message: "Method not allowed"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c82d76e7-cb59-4d9a-8743-cf71bde806ec" type="APIKIT:UNSUPPORTED_MEDIATYPE">
+			<ee:transform doc:name="Transform Message" doc:id="d9c42a9e-9af0-43c7-b9db-60394b3bf119" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	message: "Unsupported Mediatype"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+	</error-handler>
+	<error-handler name="flow_Error_Handler" doc:id="fbdba315-6bd6-4bda-b737-d0a4f939bea7" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="741904a4-f4d7-4c2e-8d15-c5f9fe95aa39" type="VALIDATION:ERROR">
+			<set-variable value="404" doc:name="httpStatusCode" doc:id="8f7c3c0b-46d3-4a24-aaa0-40730c101892" variableName="httpStatusCode"/>
+			<ee:transform doc:name="Transform Message" doc:id="5e367a69-275d-4dfb-aa98-f73122bece91" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Account not found"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+	</error-handler>
+</mule>

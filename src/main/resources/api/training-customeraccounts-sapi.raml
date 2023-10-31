@@ -1,0 +1,65 @@
+#%RAML 1.0
+title: training-customerAccounts-sapi
+description: exposing the accounts
+mediaType: [application/json]
+version: v1
+protocols: [HTTP, HTTPS]
+baseUri: /api/{version}
+
+types:
+  Account: !include dataTypes/account.raml
+
+traits:
+  header: !include traits/headers.raml
+  client-id-required:
+    headers:
+      client_id:
+        type: string
+      client_secret:
+        type: string
+    responses:
+      401:
+        description: Unauthorized, The client_id or   client_secret are not valid or the client does not have access.
+      429:
+        description: The client used all of its request quota for the current period.
+      500:
+        description: An error occurred, see the specific message (Only if it is a WSDL endpoint).
+      503:
+        description: Contracts Information Unreachable.
+
+/accounts:
+  get:
+    is: [header]
+    queryParameters:
+      accountType:
+        type: string
+    
+    responses:
+      200:
+        body:
+          type: Account[]
+          examples:
+            output: !include examples/example.raml
+  post:
+    is: [header]
+    body:
+      type: Account[]
+      example: !include examples/exampleAccount.json
+    responses:
+      201:
+        body:
+          example:
+            message: Accounts created
+
+  /{id}:
+    get:
+      responses:
+        200:
+          body:
+            type: object
+            examples:
+              output: !include examples/exampleID.raml
+        404:
+          body:
+            example:
+              message: Account not found

@@ -1,0 +1,14 @@
+[
+  {   
+    "name": "sai",
+    "accountType": "business",
+    "address": "133,gran via, TX,USA",
+    "airMiles": 4
+  },
+  {
+    "name": "joy",
+    "accountType": "personal",
+    "address": "331 grand creek, AZ, USA",
+    "airMiles": 5
+  }
+] 
